@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>trial.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+trial.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">os</span>
+<span class="s0">import </span><span class="s1">cv2</span>
+<span class="s0">from </span><span class="s1">pandas </span><span class="s0">import </span><span class="s1">ExcelFile</span><span class="s0">, </span><span class="s1">read_excel</span>
+<span class="s0">import </span><span class="s1">datetime </span><span class="s0">as </span><span class="s1">dt</span>
+<span class="s0">from </span><span class="s1">openpyxl.utils </span><span class="s0">import </span><span class="s1">get_column_letter</span>
+<span class="s0">from </span><span class="s1">openpyxl </span><span class="s0">import </span><span class="s1">load_workbook</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">messagebox</span>
+<span class="s0">import </span><span class="s1">pymysql</span>
+<span class="s0">from </span><span class="s1">pynput.keyboard </span><span class="s0">import </span><span class="s1">Key</span><span class="s0">, </span><span class="s1">Controller</span>
+<span class="s1">keyboard = Controller()</span>
+<span class="s0">import </span><span class="s1">numpy </span><span class="s0">as </span><span class="s1">np</span>
+<span class="s0">from </span><span class="s1">pyzbar.pyzbar </span><span class="s0">import </span><span class="s1">decode</span>
+<span class="s1">cap=cv2.VideoCapture(</span><span class="s2">0</span><span class="s1">)</span>
+<span class="s1">cap.set(</span><span class="s2">3</span><span class="s0">,</span><span class="s2">640</span><span class="s1">)</span>
+<span class="s1">cap.set(</span><span class="s2">4</span><span class="s0">,</span><span class="s2">480</span><span class="s1">)</span>
+
+<span class="s1">xls = ExcelFile(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)</span>
+<span class="s1">df = read_excel(xls</span><span class="s0">, </span><span class="s3">&quot;Sheet1&quot;</span><span class="s1">)  </span><span class="s4"># Storing whole excel file in variable df</span>
+<span class="s1">today = dt.datetime.now()  </span><span class="s4"># Current date and time</span>
+<span class="s1">today = today.strftime(</span><span class="s3">'%d/%m/%y'</span><span class="s1">)  </span><span class="s4"># Current time in string form</span>
+<span class="s1">student_status = [</span><span class="s3">'AB' </span><span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(df))]</span>
+<span class="s1">df[today] = student_status  </span><span class="s4"># Marking AB initially to all student</span>
+<span class="s1">excelbook = load_workbook(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)  </span><span class="s4"># Will loading in the same file and sheet</span>
+<span class="s1">sheet = excelbook.get_sheet_by_name(</span><span class="s3">&quot;Sheet1&quot;</span><span class="s1">)</span>
+<span class="s1">max_col_no = sheet.max_column</span>
+<span class="s1">max_col_letter = get_column_letter(sheet.max_column + </span><span class="s2">1</span><span class="s1">)</span>
+<span class="s1">row_1 = []</span>
+<span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(max_col_no):</span>
+    <span class="s1">row_1.append(sheet.cell(row=</span><span class="s2">1</span><span class="s0">, </span><span class="s1">column=i + </span><span class="s2">1</span><span class="s1">).value)</span>
+    <span class="s4"># mark attendance'''</span>
+<span class="s1">present_status = df[today].values.tolist()</span>
+<span class="s1">present_status.insert(</span><span class="s2">0</span><span class="s0">, </span><span class="s1">today)</span>
+
+<span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(df) + </span><span class="s2">1</span><span class="s1">):</span>
+    <span class="s1">c = sheet[max_col_letter + str(i + </span><span class="s2">1</span><span class="s1">)]</span>
+    <span class="s1">c.value = present_status[i]</span>
+<span class="s1">excelbook.save(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)</span>
+
+
+
+<span class="s1">os.remove(</span><span class="s3">&quot;Myfile.txt&quot;</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">myfunc():</span>
+    <span class="s1">file1 = open(</span><span class="s3">&quot;Myfile.txt&quot;</span><span class="s0">, </span><span class="s3">&quot;r&quot;</span><span class="s1">)</span>
+    <span class="s1">line = file1.readline()</span>
+    <span class="s1">xls = ExcelFile(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)</span>
+    <span class="s1">df = read_excel(xls</span><span class="s0">, </span><span class="s3">&quot;Sheet1&quot;</span><span class="s1">)</span>
+    <span class="s1">lister=[]</span>
+    <span class="s0">while </span><span class="s1">line:</span>
+        <span class="s1">line=line.rstrip(</span><span class="s3">&quot;</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">)</span>
+        <span class="s1">line = int(line)</span>
+        <span class="s0">if </span><span class="s1">line </span><span class="s0">not in </span><span class="s1">lister:</span>
+            <span class="s1">lister.append(line)</span>
+            <span class="s1">line = int(line)</span>
+        <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">0</span><span class="s0">, </span><span class="s1">len(df[</span><span class="s3">'Gr_no'</span><span class="s1">])):</span>
+                <span class="s0">if </span><span class="s1">df[</span><span class="s3">'Gr_no'</span><span class="s1">][i] == line:</span>
+                    <span class="s1">present_status[i+</span><span class="s2">1</span><span class="s1">]=</span><span class="s3">'P'</span>
+                    <span class="s4">#print(present_status[i])</span>
+                    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(df) + </span><span class="s2">1</span><span class="s1">):</span>
+                        <span class="s1">c = sheet[max_col_letter + str(i + </span><span class="s2">1</span><span class="s1">)]               </span><span class="s4">#This is the adresss of the today's attedance</span>
+                        <span class="s1">c.value = present_status[i]</span>
+                    <span class="s1">excelbook.save(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)</span>
+        <span class="s1">line=file1.readline()</span>
+
+<span class="s0">while True</span><span class="s1">:</span>
+    <span class="s1">sucess</span><span class="s0">, </span><span class="s1">img= cap.read()</span>
+    <span class="s0">for </span><span class="s1">barcode </span><span class="s0">in </span><span class="s1">decode(img):</span>
+        <span class="s1">myData=barcode.data.decode(</span><span class="s3">'utf-8'</span><span class="s1">)</span>
+        <span class="s1">B=int(myData)</span>
+        <span class="s1">pts = np.array([barcode.polygon]</span><span class="s0">, </span><span class="s1">np.int32)</span>
+        <span class="s1">pts = pts.reshape((-</span><span class="s2">1</span><span class="s0">, </span><span class="s2">1</span><span class="s0">, </span><span class="s2">2</span><span class="s1">))</span>
+        <span class="s1">cv2.polylines(img</span><span class="s0">, </span><span class="s1">[pts]</span><span class="s0">, True, </span><span class="s1">(</span><span class="s2">255</span><span class="s0">, </span><span class="s2">0</span><span class="s0">, </span><span class="s2">255</span><span class="s1">)</span><span class="s0">, </span><span class="s2">2</span><span class="s1">)</span>
+        <span class="s1">pts2 = barcode.rect</span>
+        <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">0</span><span class="s0">, </span><span class="s1">len(df[</span><span class="s3">'Gr_no'</span><span class="s1">])):</span>
+                <span class="s0">if </span><span class="s1">df[</span><span class="s3">'Gr_no'</span><span class="s1">][i] == B:</span>
+                    <span class="s1">xls = ExcelFile(</span><span class="s3">'attendance2.xlsx'</span><span class="s1">)</span>
+                    <span class="s1">df = read_excel(xls</span><span class="s0">, </span><span class="s3">&quot;Sheet1&quot;</span><span class="s1">)</span>
+                    <span class="s1">A=df[</span><span class="s3">'name'</span><span class="s1">][i]</span>
+
+        <span class="s1">cv2.putText(img</span><span class="s0">, </span><span class="s1">myData +</span><span class="s3">&quot; &quot;</span><span class="s1">+ A +</span><span class="s3">&quot; is present today.&quot;</span><span class="s0">, </span><span class="s1">(pts2[</span><span class="s2">0</span><span class="s1">]</span><span class="s0">, </span><span class="s1">pts2[</span><span class="s2">1</span><span class="s1">])</span><span class="s0">, </span><span class="s1">cv2.FONT_HERSHEY_SIMPLEX</span><span class="s0">, </span><span class="s2">0.5</span><span class="s0">, </span><span class="s1">(</span><span class="s2">0</span><span class="s0">, </span><span class="s2">0</span><span class="s0">, </span><span class="s2">0</span><span class="s1">))</span>
+        <span class="s1">file1 = open(</span><span class="s3">&quot;Myfile.txt&quot;</span><span class="s0">, </span><span class="s3">&quot;a&quot;</span><span class="s1">)</span>
+        <span class="s1">file1.write(myData+</span><span class="s3">'</span><span class="s0">\n</span><span class="s3">'</span><span class="s1">)</span>
+        <span class="s1">file1.close()</span>
+    <span class="s1">cv2.imshow(</span><span class="s3">'Scan here'</span><span class="s0">,</span><span class="s1">img)</span>
+    <span class="s1">key = cv2.waitKey(</span><span class="s2">1</span><span class="s1">)</span>
+    <span class="s0">if </span><span class="s1">key == </span><span class="s2">27</span><span class="s1">:</span>
+        <span class="s1">myfunc()</span>
+        <span class="s0">break</span>
+<span class="s1">messagebox.showinfo(</span><span class="s3">'Done '</span><span class="s0">,</span><span class="s3">&quot;Your class's today's attendance has been updated.&quot;</span><span class="s1">)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<html>
+<head>
+<title>donetrialagain.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+donetrialagain.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span><span class="s0">, </span><span class="s1">ImageDraw</span><span class="s0">, </span><span class="s1">ImageFont</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span>
+<span class="s1">image = Image.new(</span><span class="s2">'RGB'</span><span class="s0">, </span><span class="s1">(</span><span class="s3">1000</span><span class="s0">, </span><span class="s3">900</span><span class="s1">)</span><span class="s0">, </span><span class="s1">(</span><span class="s3">255</span><span class="s0">, </span><span class="s3">255</span><span class="s0">, </span><span class="s3">255</span><span class="s1">))</span>
+<span class="s1">draw = ImageDraw.Draw(image)</span>
+<span class="s1">font = ImageFont.truetype(</span><span class="s2">'arial.ttf'</span><span class="s0">, </span><span class="s1">size=</span><span class="s3">18</span><span class="s1">)</span>
+<span class="s1">font1 = ImageFont.truetype(</span><span class="s2">'arial.ttf'</span><span class="s0">, </span><span class="s1">size=</span><span class="s3">15</span><span class="s1">)</span>
+<span class="s0">import </span><span class="s1">qrcode</span>
+<span class="s0">import </span><span class="s1">cv2</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">*</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">PhotoImage</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">ttk</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">messagebox</span>
+<span class="s0">from </span><span class="s1">pynput.keyboard </span><span class="s0">import </span><span class="s1">Key</span><span class="s0">, </span><span class="s1">Controller</span>
+<span class="s1">keyboard = Controller()</span>
+<span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+<span class="s0">import </span><span class="s1">pymysql</span>
+<span class="s0">import </span><span class="s1">os</span>
+<span class="s0">import </span><span class="s1">sqlalchemy </span><span class="s0">as </span><span class="s1">ac</span>
+<span class="s0">from </span><span class="s1">pynput.keyboard </span><span class="s0">import </span><span class="s1">Key</span><span class="s0">, </span><span class="s1">Controller</span>
+<span class="s1">keyboard = Controller()</span>
+
+<span class="s0">def </span><span class="s1">modify():</span>
+    <span class="s1">start = Entryroll_start.get()</span>
+    <span class="s1">mydb = pymysql.connect(host=</span><span class="s2">&quot;localhost&quot;</span><span class="s0">, </span><span class="s1">user=</span><span class="s2">&quot;root&quot;</span><span class="s0">, </span><span class="s1">passwd=</span><span class="s2">&quot;punit&quot;</span><span class="s0">, </span><span class="s1">db=</span><span class="s2">&quot;Project&quot;</span><span class="s1">)</span>
+    <span class="s1">mycursor = mydb.cursor()  </span><span class="s4"># Connecting the database</span>
+    <span class="s1">sql1 = </span><span class="s2">&quot;SELECT * FROM Student_details WHERE Gr_no=%s&quot;</span>
+    <span class="s1">val2 = (start)</span>
+    <span class="s1">mycursor.execute(sql1</span><span class="s0">, </span><span class="s1">val2)</span>
+    <span class="s1">myresult = mycursor.fetchall()</span>
+    <span class="s1">Label1 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Gr Number&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label1.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">Label2 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;FULL NAME&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label2.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">1</span><span class="s1">)</span>
+    <span class="s1">Label3 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;STD&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label3.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">2</span><span class="s1">)</span>
+    <span class="s1">Label4 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;ROLL NO.&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label4.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">3</span><span class="s1">)</span>
+    <span class="s1">Label5 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;DOB&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label5.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">4</span><span class="s1">)</span>
+    <span class="s1">Label6 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Address&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">30</span><span class="s1">)</span>
+    <span class="s1">Label6.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">5</span><span class="s1">)</span>
+    <span class="s1">Label7 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Blood gr.&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label7.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">6</span><span class="s1">)</span>
+    <span class="s1">Label8 = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Mobile No.&quot;</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">10</span><span class="s1">)</span>
+    <span class="s1">Label8.grid(row=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">7</span><span class="s1">)</span>
+    <span class="s0">for </span><span class="s1">index</span><span class="s0">, </span><span class="s1">myresult </span><span class="s0">in </span><span class="s1">enumerate(myresult):</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">0</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">0</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">1</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">1</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">2</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">2</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">3</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">3</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">4</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">4</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">5</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">5</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">6</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">6</span><span class="s1">)</span>
+        <span class="s1">Label(tab2</span><span class="s0">, </span><span class="s1">text=myresult[</span><span class="s3">7</span><span class="s1">]).grid(row=index + </span><span class="s3">1</span><span class="s0">, </span><span class="s1">column=</span><span class="s3">7</span><span class="s1">)</span>
+        <span class="s1">Edit = Button(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;EDIT&quot;</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">'green'</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'white'</span><span class="s0">, </span><span class="s1">command=ED)</span>
+        <span class="s1">Edit.place(x=</span><span class="s3">20</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">60</span><span class="s1">)</span>
+<span class="s1">()</span>
+
+<span class="s0">def </span><span class="s1">ED():</span>
+    <span class="s1">gr = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Gr Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">gr.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">190</span><span class="s1">)</span>
+    <span class="s0">global </span><span class="s1">Entry10</span><span class="s0">,</span><span class="s1">Entry11</span><span class="s0">, </span><span class="s1">Entry12</span><span class="s0">, </span><span class="s1">Entry13</span><span class="s0">, </span><span class="s1">Entry14</span><span class="s0">, </span><span class="s1">Entry15</span><span class="s0">, </span><span class="s1">Entry16</span><span class="s0">, </span><span class="s1">Entry17</span>
+    <span class="s1">Entry10 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry10.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">190</span><span class="s1">)</span>
+
+    <span class="s1">b = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Name:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">b.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">220</span><span class="s1">)</span>
+    <span class="s1">Entry11 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry11.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">220</span><span class="s1">)</span>
+
+    <span class="s1">c = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Std:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">c.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">250</span><span class="s1">)</span>
+    <span class="s1">Entry12 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry12.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">250</span><span class="s1">)</span>
+
+    <span class="s1">d = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Roll Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">d.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">280</span><span class="s1">)</span>
+    <span class="s1">Entry13 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry13.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">280</span><span class="s1">)</span>
+
+    <span class="s1">e = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;DOB:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">e.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">310</span><span class="s1">)</span>
+    <span class="s1">Entry14 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry14.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">310</span><span class="s1">)</span>
+
+    <span class="s1">f = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Blood Group:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">f.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">340</span><span class="s1">)</span>
+    <span class="s1">Entry15 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry15.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">340</span><span class="s1">)</span>
+
+    <span class="s1">PI = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Address:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">PI.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">370</span><span class="s1">)</span>
+    <span class="s1">Entry17 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry17.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">370</span><span class="s1">)</span>
+
+    <span class="s1">h = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Mobile No:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+    <span class="s1">h.place(x=</span><span class="s3">150</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">400</span><span class="s1">)</span>
+    <span class="s1">Entry16 = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+    <span class="s1">Entry16.place(x=</span><span class="s3">270</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">400</span><span class="s1">)</span>
+
+    <span class="s1">upd = Button(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Update&quot;</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">'green'</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'white'</span><span class="s0">, </span><span class="s1">command=Upt)</span>
+    <span class="s1">upd.place(x=</span><span class="s3">350</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">440</span><span class="s1">)</span>
+<span class="s1">()</span>
+
+<span class="s0">def </span><span class="s1">Upt():</span>
+    <span class="s1">gro = Entry10.get()</span>
+    <span class="s1">name1 = Entry11.get()  </span><span class="s4"># Getting entries data from GUI</span>
+    <span class="s1">std1 = Entry12.get()</span>
+    <span class="s1">roll = Entry13.get()</span>
+    <span class="s1">dob = Entry14.get()</span>
+    <span class="s1">bloodgr = Entry15.get()</span>
+    <span class="s1">add = Entry17.get()</span>
+    <span class="s1">mobile = Entry16.get()</span>
+    <span class="s1">start1 = Entryroll_start.get()</span>
+
+    <span class="s1">mydb = pymysql.connect(host=</span><span class="s2">&quot;localhost&quot;</span><span class="s0">, </span><span class="s1">user=</span><span class="s2">&quot;root&quot;</span><span class="s0">, </span><span class="s1">passwd=</span><span class="s2">&quot;punit&quot;</span><span class="s0">, </span><span class="s1">db=</span><span class="s2">&quot;Project&quot;</span><span class="s1">)</span>
+    <span class="s1">mycursor = mydb.cursor()  </span><span class="s4"># Connecting the database</span>
+    <span class="s1">sql2 = </span><span class="s2">&quot;UPDATE Student_details SET Gr_no=%s , name=%s , std=%s , Roll_no=%s , DOB=%s , Address=%s , Bloodgr=%s, MobileNo=%s WHERE Gr_no=%s&quot;</span>
+    <span class="s1">val3 = (gro</span><span class="s0">, </span><span class="s1">name1</span><span class="s0">, </span><span class="s1">std1</span><span class="s0">, </span><span class="s1">roll</span><span class="s0">, </span><span class="s1">dob</span><span class="s0">, </span><span class="s1">add </span><span class="s0">, </span><span class="s1">bloodgr</span><span class="s0">, </span><span class="s1">mobile</span><span class="s0">, </span><span class="s1">start1)</span>
+    <span class="s1">mycursor.execute(sql2</span><span class="s0">, </span><span class="s1">val3)</span>
+    <span class="s1">mydb.commit()</span>
+
+    <span class="s1">U=ac.create_engine(</span><span class="s2">'mysql+pymysql://root:punit@127.0.0.1:3306/project'</span><span class="s1">)</span>
+    <span class="s1">full_deatils = pd.read_sql_table(</span><span class="s2">'student_details'</span><span class="s0">, </span><span class="s1">U)</span>
+    <span class="s1">full_deatils.to_excel(</span><span class="s2">&quot;Students Details.xlsx&quot;</span><span class="s0">, </span><span class="s1">index=FALSE)</span>
+    <span class="s1">student=pd.read_sql_table(</span><span class="s2">'student_details'</span><span class="s0">, </span><span class="s1">U</span><span class="s0">, </span><span class="s1">columns=[</span><span class="s2">'Gr_no'</span><span class="s0">,</span><span class="s2">'name'</span><span class="s1">])</span>
+    <span class="s1">student.to_excel(</span><span class="s2">&quot;attendance2.xlsx&quot;</span><span class="s0">, </span><span class="s1">index=FALSE)</span>
+
+    <span class="s1">Entry10.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry11.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)  </span><span class="s4"># Reseting the entry after clicking button</span>
+    <span class="s1">Entry12.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry13.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry14.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry15.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry16.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry17.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+<span class="s1">()</span>
+
+<span class="s0">def </span><span class="s1">new():</span>
+    <span class="s1">gro = Entry3.get()</span>
+    <span class="s1">name = Entry4.get()  </span><span class="s4"># Getting entries data from GUI</span>
+    <span class="s1">std = Entry5.get()</span>
+    <span class="s1">roll = Entry6.get()</span>
+    <span class="s1">dob = Entry7.get()</span>
+    <span class="s1">bloodgr = Entry8.get()</span>
+    <span class="s1">add = Entry9.get()</span>
+    <span class="s1">mobile = Entry10.get()</span>
+    <span class="s1">mydb = pymysql.connect(host=</span><span class="s2">&quot;localhost&quot;</span><span class="s0">, </span><span class="s1">user=</span><span class="s2">&quot;root&quot;</span><span class="s0">, </span><span class="s1">passwd=</span><span class="s2">&quot;punit&quot;</span><span class="s0">, </span><span class="s1">db=</span><span class="s2">&quot;Project&quot;</span><span class="s1">)</span>
+    <span class="s1">mycursor = mydb.cursor()                                                                  </span><span class="s4"># Connecting the database</span>
+    <span class="s1">sql = </span><span class="s2">&quot;INSERT INTO Student_details (Gr_no, name, std, Roll_no, DOB, Address, Bloodgr, MobileNo) &quot; </span><span class="s1">\</span>
+          <span class="s2">&quot;VALUES (%s, %s,%s, %s, %s, %s,%s, %s )&quot;</span>
+    <span class="s1">val = (gro</span><span class="s0">, </span><span class="s1">name</span><span class="s0">, </span><span class="s1">std</span><span class="s0">, </span><span class="s1">roll</span><span class="s0">, </span><span class="s1">dob</span><span class="s0">, </span><span class="s1">add</span><span class="s0">, </span><span class="s1">bloodgr</span><span class="s0">, </span><span class="s1">mobile)</span>
+    <span class="s1">mycursor.execute(sql</span><span class="s0">, </span><span class="s1">val)</span>
+    <span class="s1">QR_code = Entry3.get()  </span><span class="s4"># getting data from GUI</span>
+    <span class="s1">filename = QR_code + </span><span class="s2">'.jpg'</span>
+    <span class="s1">img = qrcode.make(QR_code)  </span><span class="s4"># .make makes Qr code</span>
+    <span class="s1">img.save(filename)  </span><span class="s4"># saving the Qr code</span>
+    <span class="s1">root.photo = PhotoImage(file=filename)  </span><span class="s4"># getting Qrcode Image</span>
+    <span class="s1">QR.config(image=root.photo</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">300</span><span class="s0">, </span><span class="s1">height=</span><span class="s3">300</span><span class="s1">)</span>
+    <span class="s1">messagebox.showinfo(</span><span class="s2">'Saved'</span><span class="s0">, </span><span class="s2">'QR code saved as &quot; ' </span><span class="s1">+ QR_code + </span><span class="s2">' &quot; successfully!</span><span class="s0">\n\t</span><span class="s2">in current location </span><span class="s0">\n\t </span><span class="s2">And all detials are added to database'</span><span class="s1">)</span>
+    <span class="s1">mydb.commit()</span>
+    <span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span><span class="s0">, </span><span class="s1">ImageDraw</span>
+    <span class="s1">im = Image.open(</span><span class="s2">&quot;ID.JPG&quot;</span><span class="s1">)</span>
+
+    <span class="s1">d = ImageDraw.Draw(im)</span>
+    <span class="s1">location = (</span><span class="s3">320</span><span class="s0">, </span><span class="s3">125</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">255</span><span class="s0">, </span><span class="s3">255</span><span class="s0">, </span><span class="s3">255</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s1">name</span><span class="s0">, </span><span class="s1">font=font</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+
+    <span class="s1">location = (</span><span class="s3">405</span><span class="s0">, </span><span class="s3">173</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s1">QR_code</span><span class="s0">, </span><span class="s1">font=font</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+
+    <span class="s1">location = (</span><span class="s3">270</span><span class="s0">, </span><span class="s3">220</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s2">&quot;STD: &quot; </span><span class="s1">+ std</span><span class="s0">, </span><span class="s1">font=font1</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+
+    <span class="s1">location = (</span><span class="s3">270</span><span class="s0">, </span><span class="s3">250</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s2">&quot;DOB: &quot; </span><span class="s1">+ dob</span><span class="s0">, </span><span class="s1">font=font1</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+
+    <span class="s1">location = (</span><span class="s3">270</span><span class="s0">, </span><span class="s3">280</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s2">&quot;MOBILE: &quot; </span><span class="s1">+ mobile</span><span class="s0">, </span><span class="s1">font=font1</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+
+    <span class="s1">location = (</span><span class="s3">270</span><span class="s0">, </span><span class="s3">310</span><span class="s1">)</span>
+    <span class="s1">text_color = (</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span>
+    <span class="s1">d.text(location</span><span class="s0">, </span><span class="s2">&quot;ADDRESS: &quot; </span><span class="s1">+ </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+ add</span><span class="s0">, </span><span class="s1">font=font1</span><span class="s0">, </span><span class="s1">fill=text_color)</span>
+    <span class="s1">path = </span><span class="s2">'C:/Users/VK/PycharmProjects/QR Attendence/ID CARDS/'</span>
+    <span class="s1">im.save(</span><span class="s2">'hello.png'</span><span class="s1">)</span>
+    <span class="s1">til = Image.open(</span><span class="s2">r&quot;hello.png&quot;</span><span class="s1">)</span>
+    <span class="s1">im1 = Image.open(filename)  </span><span class="s4"># 25x25</span>
+    <span class="s1">images = im1.resize((</span><span class="s3">160</span><span class="s0">, </span><span class="s3">160</span><span class="s1">))</span>
+    <span class="s1">til.paste(images</span><span class="s0">, </span><span class="s1">(</span><span class="s3">60</span><span class="s0">, </span><span class="s3">180</span><span class="s1">))</span>
+    <span class="s1">til.save(name + </span><span class="s2">&quot;.png&quot;</span><span class="s1">)</span>
+
+
+    <span class="s1">Entry3.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry4.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)  </span><span class="s4"># Reseting the entry after clicking button</span>
+    <span class="s1">Entry5.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry6.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry7.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry8.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry9.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+    <span class="s1">Entry10.delete(</span><span class="s3">0</span><span class="s0">, </span><span class="s2">&quot;end&quot;</span><span class="s1">)</span>
+
+    <span class="s1">U=ac.create_engine(</span><span class="s2">'mysql+pymysql://root:punit@127.0.0.1:3306/project'</span><span class="s1">) </span><span class="s4"># sqlalchemy because sql_table only run with this connecttable</span>
+    <span class="s1">full_deatils = pd.read_sql_table(</span><span class="s2">'student_details'</span><span class="s0">, </span><span class="s1">U)</span>
+    <span class="s1">full_deatils.to_excel(</span><span class="s2">&quot;Students Details.xlsx&quot;</span><span class="s0">, </span><span class="s1">index=FALSE)</span>
+    <span class="s1">student=pd.read_sql_table(</span><span class="s2">'student_details'</span><span class="s0">, </span><span class="s1">U</span><span class="s0">, </span><span class="s1">columns=[</span><span class="s2">'Gr_no'</span><span class="s0">,</span><span class="s2">'name'</span><span class="s1">])</span>
+    <span class="s1">student.to_excel(</span><span class="s2">&quot;attendance2.xlsx&quot;</span><span class="s0">, </span><span class="s1">index=FALSE)</span>
+    <span class="s2">'''mydb1 = pymysql.connect(host=&quot;localhost&quot;, user=&quot;root&quot;, passwd=&quot;punit&quot;, db=&quot;Project&quot;) 
+    mycursor1 = mydb1.cursor() 
+    df = pd.read_sql_table('student_details', mycursor1) 
+    df.to_excel(&quot;Students Details.xlsx&quot;, index=FALSE) 
+    student = pd.read_sql_table('student_details', mycursor1, columns=['Gr_no', 'name']) 
+    student.to_excel(&quot;attendance2.xlsx&quot;, index=FALSE)'''</span>
+
+<span class="s1">()</span>
+
+
+<span class="s1">cap = cv2.VideoCapture(</span><span class="s3">0</span><span class="s1">)</span>
+<span class="s1">cap.set(</span><span class="s3">3</span><span class="s0">, </span><span class="s3">640</span><span class="s1">)</span>
+<span class="s1">cap.set(</span><span class="s3">4</span><span class="s0">, </span><span class="s3">480</span><span class="s1">)</span>
+
+
+<span class="s0">def </span><span class="s1">check():</span>
+    <span class="s0">import </span><span class="s1">trial</span>
+
+<span class="s1">()</span>
+
+
+<span class="s4"># GUI CODING</span>
+<span class="s1">root = Tk()</span>
+<span class="s1">root.title(</span><span class="s2">&quot;Attendance System&quot;</span><span class="s1">)</span>
+<span class="s1">root.resizable(width=FALSE</span><span class="s0">, </span><span class="s1">height=FALSE)</span>
+<span class="s1">root.geometry(</span><span class="s2">'1300x1200'</span><span class="s1">)</span>
+
+<span class="s1">tab_parent = ttk.Notebook(root)</span>
+<span class="s1">tab1 = Frame(tab_parent)</span>
+<span class="s1">tab2 = Frame(tab_parent)</span>
+<span class="s1">tab3 = Frame(tab_parent)</span>
+<span class="s1">tab_parent.add(tab1</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">'Home'</span><span class="s1">)</span>
+<span class="s1">tab_parent.add(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">'Modification'</span><span class="s1">)</span>
+<span class="s1">tab_parent.add(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">'New Entry'</span><span class="s1">)</span>
+<span class="s1">tab_parent.pack(expand=</span><span class="s3">1</span><span class="s0">, </span><span class="s1">fill=</span><span class="s2">'both'</span><span class="s1">)</span>
+
+<span class="s1">title = Label(tab1</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;AIRPORT SCHOOL </span><span class="s0">\n </span><span class="s2">AHMEDABAD&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Old English Text MT'</span><span class="s0">, </span><span class="s3">36</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'Brown'</span><span class="s1">)</span>
+<span class="s1">title.place(x=</span><span class="s3">350</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">50</span><span class="s1">)</span>
+<span class="s1">system = Label(tab1</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;QR Code Attendance system&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">11</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s0">, </span><span class="s2">'underline'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">system.place(x=</span><span class="s3">1000</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">600</span><span class="s1">)</span>
+<span class="s1">punch = Button(tab1</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Punch Your ID-Card&quot;</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">'green'</span><span class="s0">,  </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">11</span><span class="s1">)</span><span class="s0">,</span><span class="s1">fg=</span><span class="s2">'white'</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">30</span><span class="s0">, </span><span class="s1">height=</span><span class="s3">10</span><span class="s0">, </span><span class="s1">command=check)</span>
+<span class="s1">punch.place(x=</span><span class="s3">450</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">300</span><span class="s1">)</span>
+<span class="s1">title1 = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Please fill all the details for new entry.&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">20</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'Brown'</span><span class="s1">)</span>
+<span class="s1">title1.place(x=</span><span class="s3">350</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">20</span><span class="s1">)</span>
+<span class="s1">QR_code = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Gr Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">))</span>
+<span class="s1">QR_code.place(x=</span><span class="s3">75</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">67</span><span class="s1">)</span>
+
+<span class="s1">a = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Gr Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">a.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">66</span><span class="s1">)</span>
+<span class="s1">Entry3 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry3.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">70</span><span class="s1">)</span>
+
+<span class="s1">b = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Name:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">b.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">100</span><span class="s1">)</span>
+<span class="s1">Entry4 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry4.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">100</span><span class="s1">)</span>
+
+<span class="s1">c = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Std:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">c.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">130</span><span class="s1">)</span>
+<span class="s1">Entry5 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry5.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">130</span><span class="s1">)</span>
+
+<span class="s1">d = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Roll Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">d.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">160</span><span class="s1">)</span>
+<span class="s1">Entry6 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry6.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">160</span><span class="s1">)</span>
+
+<span class="s1">e = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;DOB:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">e.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">190</span><span class="s1">)</span>
+<span class="s1">Entry7 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry7.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">190</span><span class="s1">)</span>
+
+<span class="s1">f = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Blood Group:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">f.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">220</span><span class="s1">)</span>
+<span class="s1">Entry8 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry8.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">220</span><span class="s1">)</span>
+
+<span class="s1">g = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Address:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">g.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">250</span><span class="s1">)</span>
+<span class="s1">Entry9 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry9.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">250</span><span class="s1">)</span>
+
+<span class="s1">h = Label(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Mobile Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">h.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">280</span><span class="s1">)</span>
+<span class="s1">Entry10 = Entry(tab3</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entry10.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">280</span><span class="s1">)</span>
+
+<span class="s1">QR = Label(tab3</span><span class="s0">, </span><span class="s1">image=</span><span class="s2">''</span><span class="s1">)</span>
+<span class="s1">QR.place(x=</span><span class="s3">100</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">350</span><span class="s1">)</span>
+<span class="s1">lab = Label(tab1</span><span class="s0">, </span><span class="s1">image=</span><span class="s2">''</span><span class="s1">)</span>
+<span class="s1">lab.place(x=-</span><span class="s3">60</span><span class="s0">, </span><span class="s1">y=-</span><span class="s3">80</span><span class="s1">)</span>
+<span class="s1">root.photo2 = PhotoImage(file=</span><span class="s2">'logo.png'</span><span class="s1">)</span>
+<span class="s1">lab.config(image=root.photo2</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">400</span><span class="s0">, </span><span class="s1">height=</span><span class="s3">400</span><span class="s1">)</span>
+
+<span class="s1">btn = Button(tab3</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Submit&quot;</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">'green'</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'white'</span><span class="s0">, </span><span class="s1">command=new)</span>
+<span class="s1">btn.place(x=</span><span class="s3">330</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">310</span><span class="s1">)</span>
+<span class="s1">donegr = Label(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Gr Number:&quot;</span><span class="s0">, </span><span class="s1">font=(</span><span class="s2">'Arial'</span><span class="s0">, </span><span class="s3">12</span><span class="s0">, </span><span class="s2">'bold'</span><span class="s1">)</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'black'</span><span class="s1">)</span>
+<span class="s1">a.place(x=</span><span class="s3">120</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">66</span><span class="s1">)</span>
+
+<span class="s1">Entryroll_start = Entry(tab2</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'blue'</span><span class="s0">, </span><span class="s1">bd=</span><span class="s3">3</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">40</span><span class="s1">)</span>
+<span class="s1">Entryroll_start.place(x=</span><span class="s3">250</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">70</span><span class="s1">)</span>
+<span class="s1">btn5 = Button(tab2</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Submit&quot;</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">'green'</span><span class="s0">, </span><span class="s1">fg=</span><span class="s2">'white'</span><span class="s0">, </span><span class="s1">command=modify)</span>
+<span class="s1">btn5.place(x=</span><span class="s3">330</span><span class="s0">, </span><span class="s1">y=</span><span class="s3">100</span><span class="s1">)</span>
+
+<span class="s1">root.mainloop()</span>
+
+
+
+</pre>
+</body>
+</html>
